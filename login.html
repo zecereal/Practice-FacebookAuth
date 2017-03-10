@@ -6,13 +6,14 @@
         <script src='./jquery.session.js' ></script>
     </head>
     <body>
-        <div>
+        <div id="fb">
             game eiei
         </div>
     </body>
 
     <script>
         let {id, name } = JSON.parse($.session.get('fb'));
+        document.getElementById('fb').innerHTML = id + "  " + name;
         console.log(id);
         console.log(name);
     </script>
