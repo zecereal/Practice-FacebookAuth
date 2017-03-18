@@ -2,9 +2,8 @@
 
 <head>
     <title>Test FB Auth Login</title>
-    <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
-        crossorigin="anonymous"></script>
-        <script src='./jquery.session.js' ></script>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+    <script src='./jquery.session.js'></script>
 </head>
 
 <body>
@@ -13,9 +12,9 @@
     </div>
     <div id="fb-root"></div>
     <div class="fb-login-button" data-max-rows="1" data-size="medium" data-show-faces="false" data-auto-logout-link="true" onlogin="checkLoginState()"></div>
-    
+
     <div><a href="login.html">Next page</a></div>
-    <div id="status" >
+    <div id="status">
     </div>
 </body>
 <script>
@@ -32,28 +31,35 @@
                 'into Facebook.';
         }
     }
+
     function checkLoginState() {
-        FB.getLoginStatus(function (response) {
+        FB.getLoginStatus(function(response) {
             statusChangeCallback(response);
         });
+        if ($.session.get('fb') !== null) {
+            $.session.set('fb', JSON.stringify({
+                id: 0,
+                name: "Guest",
+            }));
+        }
         console.log('checkLoginState activated');
     }
 
-    window.fbAsyncInit = function () {
+    window.fbAsyncInit = function() {
         FB.init({
             appId: '1818612055066491',
             cookie: true,
-            xfbml: true, 
+            xfbml: true,
             version: 'v2.8'
         });
 
-        FB.getLoginStatus(function (response) {
+        FB.getLoginStatus(function(response) {
             statusChangeCallback(response);
         });
 
     };
 
-    (function (d, s, id) {
+    (function(d, s, id) {
         var js, fjs = d.getElementsByTagName(s)[0];
         if (d.getElementById(id)) return;
         js = d.createElement(s);
@@ -64,20 +70,19 @@
 
     function testAPI() {
         console.log('Welcome!  Fetching your information.... ');
-        FB.api('/me', function (response) {
+        FB.api('/me', function(response) {
             console.log('Successful login for: ' + response.name);
             document.getElementById('status').innerHTML =
                 'Thanks for logging in, ' + response.name + '!';
-            console.log(response);            
+            console.log(response);
             // modify function
-            $.session.set('fb',  JSON.stringify({
+            $.session.set('fb', JSON.stringify({
                 id: response.id,
                 name: response.name,
-            }) );
+            }));
         });
         console.log(JSON.parse($.session.get('fb')));
     }
-
 </script>
 
 </html>
